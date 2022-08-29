@@ -29,3 +29,28 @@ func ParseBinary(filename string) []float32 {
 
 	return output
 }
+
+func ParseBinaryFloat(filename string, width int16, height int16) ([][]float32, error) {
+	file, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return [][]float32{}, err
+	}
+
+	buf := bytes.NewReader(file)
+	var output [][]float32
+
+	for i := 0; i < int(height); i++ {
+		row := make([]float32, width)
+		for j := 0; j < int(width); j++ {
+			var intensity float32
+			err = binary.Read(buf, binary.LittleEndian, &intensity)
+			if err != nil {
+				log.Fatal(err)
+			}
+			row = append(row, intensity)
+		}
+		output = append(output, row)
+	}
+
+	return output, nil
+}
