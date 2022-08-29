@@ -25,6 +25,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/venkatesannaveen/synchrotron/convert"
 )
 
 // convertCmd represents the convert command
@@ -41,9 +42,10 @@ to quickly create a Cobra application.`,
 		inputFile, _ := cmd.Flags().GetString("input-file")
 		width, _ := cmd.Flags().GetInt16("width")
 		height, _ := cmd.Flags().GetInt16("height")
-		encoding, _ := cmd.Flags().GetString("encoding")
+		//encoding, _ := cmd.Flags().GetString("encoding")
 
-		fmt.Printf("input: %v, width: %v, height: %v, encoding: %v\n", inputFile, width, height, encoding)
+		output, _ := convert.ParseBinaryFloat(inputFile, width, height)
+		fmt.Println(output)
 	},
 }
 
