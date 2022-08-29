@@ -54,4 +54,8 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// convertCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	convertCmd.Flags().String("input-file", "", "Input file for conversion")
+	convertCmd.Flags().Int16("width", 0, "width of image in pixels")
+	convertCmd.Flags().Int16("height", 0, "height of image in pixels")
+	convertCmd.Flags().String("encoding", "", "Encoding of bytes in image")
 }
