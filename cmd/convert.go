@@ -43,8 +43,9 @@ to quickly create a Cobra application.`,
 		width, _ := cmd.Flags().GetInt16("width")
 		height, _ := cmd.Flags().GetInt16("height")
 		//encoding, _ := cmd.Flags().GetString("encoding")
+		littleEndian, _ := cmd.Flags().GetBool("little-endian")
 
-		output, _ := convert.ParseBinaryFloat(inputFile, width, height)
+		output, _ := convert.ParseBinaryInt32(inputFile, width, height, littleEndian)
 		fmt.Println(output)
 	},
 }
@@ -65,4 +66,5 @@ func init() {
 	convertCmd.Flags().Int16("width", 0, "width of image in pixels")
 	convertCmd.Flags().Int16("height", 0, "height of image in pixels")
 	convertCmd.Flags().String("encoding", "", "Encoding of bytes in image")
+	convertCmd.Flags().Bool("little-endian", false, "Endianness of bytes in image")
 }

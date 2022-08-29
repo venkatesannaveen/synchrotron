@@ -37,7 +37,7 @@ func ParseBinaryFloat(filename string, width int16, height int16) ([][]float32, 
 	}
 
 	buf := bytes.NewReader(file)
-	var output [][]float32
+	output := make([][]float32, height)
 
 	for i := 0; i < int(height); i++ {
 		row := make([]float32, width)
@@ -47,9 +47,42 @@ func ParseBinaryFloat(filename string, width int16, height int16) ([][]float32, 
 			if err != nil {
 				log.Fatal(err)
 			}
-			row = append(row, intensity)
+			row[j] = intensity
 		}
-		output = append(output, row)
+		output[i] = row
+	}
+
+	return output, nil
+}
+
+func ParseBinaryInt32(filename string, width int16, height int16, littleEndian bool) ([][]int32, error) {
+	file, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return [][]int32{}, err
+	}
+
+	var endianness binary.ByteOrder
+	if littleEndian {
+		endianness = binary.LittleEndian
+	} else {
+		endianness = binary.BigEndian
+	}
+
+	buf := bytes.NewReader(file)
+	output := make([][]int32, height)
+
+	for i := 0; i < int(height); i++ {
+		row := make([]int32, width)
+		for j := 0; j < int(width); j++ {
+			var intensity int32
+
+			err = binary.Read(buf, endianness, &intensity)
+			if err != nil {
+				log.Fatal(err)
+			}
+			row[j] = intensity
+		}
+		output[i] = row
 	}
 
 	return output, nil
